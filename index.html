@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        #results {
+            margin-top: 20px;
+        }
+
+        .result {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+
+        .result a {
+            text-decoration: none;
+            color: #1a0dab;
+            font-size: 18px;
+        }
+
+        .result a:hover {
+            text-decoration: underline;
+        }
+
+        .result p {
+            color: #333;
+        }
+
+        .result img {
+            width: 25px;
+            height: 25px;
+            border-radius: 40px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        #searchBar {
+            width: 50%;
+            height: 30px;
+        }
+
+        #clearButton {
+            display: none;
+            font-family: sans-serif;
+            position: relative;
+            left: -25px;
+            cursor: pointer;
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+            /* Make the clear button bold */
+        }
+
+        #suggestions {
+            display: none;
+            border: 1px solid #000;
+            width: 50%;
+        }
+
+        #suggestions div:hover {
+            background-color: #ccc;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f8f9fa;
+            padding: 10px;
+        }
+
+        /* Styles for the dark mode */
+        .dark-mode {
+            background-color: #343a40;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+      <!-- Navigation bar -->
+      <div class="navbar" id="navbar">
+        <button onclick="toggleDarkMode()">Toggle Dark/Light Mode</button>
+        <span id="clearButton" onclick="clearSearchBar()">X</span>
+        <input type="text" id="searchBar" placeholder="Search...">
+        <button onclick="search()">Search</button>
+    </div>
+
+    <div id="results"></div>
+    <div id="suggestions"></div>
+
+    <script>
+        function search(start = 1) {
+            var query = document.getElementById('searchBar').value;
+        var clearButton = document.getElementById('clearButton');
+        var query = searchBar.value;
+
+        // Show or hide the clear button based on the search bar value
+        if (searchBar.value) {
+            clearButton.style.display = 'inline';
+        } else {
+            clearButton.style.display = 'none';
+        }
+    
+
+            // Call the Google Search API
+            fetch('https://www.googleapis.com/customsearch/v1?key=AIzaSyAihvduqKvnt6s2WMTXN9bSn1sCwOALfYg&cx=f40cfb0cd67d14614&q=' + query + '&start=' + start)
+                .then(response => response.json())
+                .then(data => {
+                    // Check if data and data.items are defined before accessing them
+                    if (data && data.items) {
+                        var resultsDiv = document.getElementById('results');
+                        resultsDiv.innerHTML = ''; // Clear previous results
+
+                        // Display the Google Search results
+                        displayResults(data.items, resultsDiv, 'Search Results');
+
+                        // Create the "Next" and "Previous" buttons only if there are more results
+                        if (data.queries.nextPage) {
+                            var nextButton = document.createElement('button');
+                            nextButton.textContent = 'Next';
+                            nextButton.onclick = function () { search(start + 10); };
+                            resultsDiv.appendChild(nextButton);
+                        }
+                        if (start > 1) {
+                            var prevButton = document.createElement('button');
+                            prevButton.textContent = 'Previous';
+                            prevButton.onclick = function () { search(start - 10); };
+                            resultsDiv.appendChild(prevButton);
+                        }
+
+
+
+                    }
+                });
+
+            // Call the OpenAI API
+            fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer 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'
+                },
+                body: JSON.stringify({
+                    prompt: query,
+                    max_tokens: 60
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Display the OpenAI results
+                    displayResults([data.choices[0].text], resultsDiv, 'OpenAI Results');
+                });
+        }
+
+        function displayResults(items, resultsDiv, title) {
+            var titleElement = document.createElement('h2');
+            titleElement.textContent = title;
+            resultsDiv.appendChild(titleElement);
+
+            items.forEach(item => {
+                var resultDiv = document.createElement('div');
+                resultDiv.className = 'result';
+
+                var icon = document.createElement('img');
+                // Check if the thumbnail image exists before trying to display it
+                if (item.pagemap && item.pagemap.cse_thumbnail && item.pagemap.cse_thumbnail[0]) {
+                    icon.src = item.pagemap.cse_thumbnail[0].src;
+                } else {
+                    icon.src = 'default_image_url'; // Replace with the URL of your default image
+                }
+
+                var link = document.createElement('a');
+                link.href = item.link || '#';
+                link.textContent = item.title || item;
+
+                var description = document.createElement('p');
+                description.textContent = item.snippet || '';
+
+                resultDiv.appendChild(icon);
+                resultDiv.appendChild(link);
+                resultDiv.appendChild(description);
+
+
+                resultsDiv.appendChild(resultDiv);
+            });
+        }
+
+        
+    </script>
+</body>
+
+</html>
