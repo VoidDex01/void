@@ -49,7 +49,7 @@
             display: none;
             font-family: sans-serif;
             position: relative;
-            left: -25px;
+            left: 500px;
             cursor: pointer;
             color: rgb(0, 0, 0);
             font-weight: bold;
@@ -69,7 +69,7 @@
         .navbar {
             display: flex;
             justify-content: space-between;
-            background-color: #f8f9fa;
+            background-color: #e6e9ec;
             padding: 10px;
         }
 
@@ -78,6 +78,37 @@
             background-color: #343a40;
             color: white;
         }
+
+        .dark-mode p {
+            color: white;
+        }
+        .dark-mode a {
+            color: rgb(25, 201, 255);
+        }
+
+        .dark-mode .navbar {
+            background-color: #646566;
+        }
+
+        button {
+            background-color: #1577c7; /* Green */
+            border: none;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 18px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            transition-duration: 0.4s;
+        }
+        
+        button:hover {
+            background-color: #0a94e4;
+        }
+        
     </style>
 </head>
 
@@ -85,9 +116,10 @@
 
       <!-- Navigation bar -->
       <div class="navbar" id="navbar">
-        <button onclick="toggleDarkMode()">Toggle Dark/Light Mode</button>
-        <span id="clearButton" onclick="clearSearchBar()">X</span>
-        <input type="text" id="searchBar" placeholder="Search...">
+        <button id="modeButton" onclick="toggleDarkMode()">Dark</button>
+
+      <!-- <span id="clearButton" onclick="clearSearchBar()">X</span>--> 
+      <input type="text" id="searchBar" placeholder="Search..." oninput="showSuggestions()" onkeypress="handleKeyPress(event)">
         <button onclick="search()">Search</button>
     </div>
 
@@ -101,11 +133,11 @@
         var query = searchBar.value;
 
         // Show or hide the clear button based on the search bar value
-        if (searchBar.value) {
+       /* if (searchBar.value) {
             clearButton.style.display = 'inline';
         } else {
             clearButton.style.display = 'none';
-        }
+        } */
     
 
             // Call the Google Search API
@@ -172,7 +204,7 @@
                 if (item.pagemap && item.pagemap.cse_thumbnail && item.pagemap.cse_thumbnail[0]) {
                     icon.src = item.pagemap.cse_thumbnail[0].src;
                 } else {
-                    icon.src = 'default_image_url'; // Replace with the URL of your default image
+                    icon.src = 'https://static.vecteezy.com/system/resources/thumbnails/001/198/021/small/grid-globe.png'; // Replace with the URL of your default image
                 }
 
                 var link = document.createElement('a');
@@ -191,6 +223,27 @@
             });
         }
 
+        function toggleDarkMode() {
+            var body = document.body;
+            var modeButton = document.getElementById('modeButton');
+            
+            body.classList.toggle('dark-mode');
+            
+            // Change the button text based on the current mode
+            if (body.classList.contains('dark-mode')) {
+                modeButton.textContent = 'Light';
+            } else {
+                modeButton.textContent = 'Dark';
+            }
+        }
+        
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                search();
+            }
+        }
+        
         
     </script>
 </body>
