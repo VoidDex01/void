@@ -108,6 +108,58 @@
         button:hover {
             background-color: #0a94e4;
         }
+
+        @media only screen and (min-width: 600px) {
+            #searchBar {
+                width: 75%;
+            }
+
+            #suggestions {
+                width: 75%;
+            }
+        }
+
+        /* Styles for desktops (992px and up) */
+        @media only screen and (min-width: 992px) {
+            #searchBar {
+                width: 50%;
+            }
+
+            #suggestions {
+                width: 50%;
+            }
+        }
+
+        /* Styles for big desktops (1200px and up) */
+        @media only screen and (min-width: 1200px) {
+            #searchBar {
+                width: 50%;
+            }
+
+            #suggestions {
+                width: 50%;
+            }
+        }
+
+        @media only screen and (max-width: 600px) {
+            #searchBar {
+                width: 100%;
+            }
+
+            #suggestions {
+                width: 100%;
+            }
+
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #modeButton, #searchBar, button {
+                margin-top: 10px;
+                font-size: 18px; /* Increase font size for better visibility */
+            }
+        }
         
     </style>
 </head>
