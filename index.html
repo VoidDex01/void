@@ -9,9 +9,7 @@
             font-family: 'Roboto', sans-serif;
         }
 
-        #results {
-            margin-top: 20px;
-        }
+       
 
         .result {
             margin-bottom: 20px;
@@ -128,6 +126,16 @@
 
             button {
                 padding: 8px 11px; /* Decrease padding for smaller buttons */
+            }
+
+            #results {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+        
+            #results button {
+                flex: 1 0 auto; /* This will allow the buttons to shrink or grow as needed */
             }
         }
 
