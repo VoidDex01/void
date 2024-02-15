@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <style>
         body {
@@ -43,6 +44,7 @@
         #searchBar {
             width: 50%;
             height: 30px;
+            border-radius: 10px;
         }
 
         #clearButton {
@@ -109,56 +111,36 @@
             background-color: #0a94e4;
         }
 
-        @media only screen and (min-width: 600px) {
-            #searchBar {
-                width: 75%;
-            }
-
-            #suggestions {
-                width: 75%;
-            }
-        }
-
-        /* Styles for desktops (992px and up) */
-        @media only screen and (min-width: 992px) {
-            #searchBar {
-                width: 50%;
-            }
-
-            #suggestions {
-                width: 50%;
-            }
-        }
-
-        /* Styles for big desktops (1200px and up) */
-        @media only screen and (min-width: 1200px) {
-            #searchBar {
-                width: 50%;
-            }
-
-            #suggestions {
-                width: 50%;
-            }
-        }
-
         @media only screen and (max-width: 600px) {
-            #searchBar {
-                width: 100%;
-            }
-
-            #suggestions {
-                width: 100%;
+            #searchBar, #suggestions {
+                width: 50%;
             }
 
             .navbar {
-                flex-direction: column;
+                flex-direction: row;
+                justify-content: space-around;
                 align-items: center;
             }
 
             #modeButton, #searchBar, button {
-                margin-top: 10px;
-                font-size: 18px; /* Increase font size for better visibility */
+                font-size: 14px; /* Decrease font size for smaller elements */
             }
+
+            button {
+                padding: 8px 11px; /* Decrease padding for smaller buttons */
+            }
+        }
+
+        @media only screen and (max-width: 320px) {
+
+            button {
+                padding: 7px 10px; /* Decrease padding for smaller buttons */
+            }
+
+            #searchBar, #suggestions {
+                width: 45%;
+            }
+
         }
         
     </style>
